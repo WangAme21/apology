@@ -7,14 +7,19 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             font-family: 'Comic Sans MS', cursive, sans-serif;
             background: linear-gradient(45deg, #ff9a9e, #fecfef, #fecfef, #ff9a9e);
             background-size: 400% 400%;
             animation: gradientShift 3s ease infinite;
             min-height: 100vh;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            box-sizing: border-box;
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         @keyframes gradientShift {
@@ -30,12 +35,14 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 25px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 90%;
             max-width: 500px;
+            min-width: 280px;
             transition: all 0.3s ease;
         }
 
@@ -45,9 +52,9 @@
         }
 
         .heart {
-            font-size: 60px;
+            font-size: clamp(40px, 8vw, 60px);
             animation: heartbeat 1.5s ease-in-out infinite;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             display: inline-block;
         }
 
@@ -58,24 +65,26 @@
         }
 
         .apology-text {
-            font-size: 28px;
+            font-size: clamp(20px, 5vw, 28px);
             color: #d63384;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
             line-height: 1.4;
+            padding: 0 10px;
         }
 
         .buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .btn {
-            padding: 15px 30px;
-            font-size: 20px;
+            padding: 15px 25px;
+            font-size: clamp(16px, 4vw, 20px);
             font-weight: bold;
             border: none;
             border-radius: 50px;
@@ -85,6 +94,9 @@
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
             position: relative;
             overflow: hidden;
+            min-width: 80px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn::before {
@@ -98,7 +110,8 @@
             transition: left 0.5s;
         }
 
-        .btn:hover::before {
+        .btn:hover::before,
+        .btn:active::before {
             left: 100%;
         }
 
@@ -107,7 +120,8 @@
             color: white;
         }
 
-        .btn-yes:hover {
+        .btn-yes:hover,
+        .btn-yes:active {
             transform: translateY(-3px) scale(1.05);
             box-shadow: 0 12px 25px rgba(40, 167, 69, 0.4);
         }
@@ -116,20 +130,23 @@
             background: linear-gradient(45deg, #dc3545, #fd7e14);
             color: white;
             position: relative;
+            white-space: nowrap;
         }
 
-        .btn-no:hover {
+        .btn-no:hover,
+        .btn-no:active {
             transform: translateY(-3px) scale(1.05);
             box-shadow: 0 12px 25px rgba(220, 53, 69, 0.4);
         }
 
         .success-message {
             display: none;
-            font-size: 24px;
+            font-size: clamp(18px, 4.5vw, 24px);
             color: #28a745;
             font-weight: bold;
             margin-top: 20px;
             animation: bounce 0.8s ease;
+            padding: 0 10px;
         }
 
         @keyframes bounce {
@@ -150,7 +167,7 @@
 
         .floating-heart {
             position: absolute;
-            font-size: 30px;
+            font-size: clamp(20px, 5vw, 30px);
             color: rgba(214, 51, 132, 0.6);
             animation: float 6s ease-in-out infinite;
         }
@@ -170,6 +187,82 @@
                 transform: translateY(-100px) rotate(360deg);
                 opacity: 0;
             }
+        }
+
+        /* Mobile specific styles */
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 25px 15px;
+                width: 95%;
+                min-height: auto;
+            }
+            
+            .buttons {
+                gap: 10px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                padding: 18px 20px;
+                width: 100%;
+                max-width: 200px;
+                margin: 0 auto;
+            }
+            
+            .apology-text {
+                margin-bottom: 20px;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .container {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                margin: 20px auto;
+                padding: 20px 15px;
+            }
+            
+            body {
+                min-height: auto;
+                padding: 10px;
+            }
+            
+            .heart {
+                margin-bottom: 10px;
+            }
+            
+            .apology-text {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Tablet styles */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container {
+                padding: 35px 25px;
+                max-width: 600px;
+            }
+        }
+
+        /* Prevent text selection on buttons */
+        .btn {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Ensure smooth scrolling on iOS */
+        body {
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
@@ -226,7 +319,7 @@
             const heart = document.createElement('div');
             heart.innerHTML = '💖';
             heart.style.position = 'fixed';
-            heart.style.fontSize = '40px';
+            heart.style.fontSize = window.innerWidth < 480 ? '30px' : '40px';
             heart.style.left = Math.random() * window.innerWidth + 'px';
             heart.style.top = Math.random() * window.innerHeight + 'px';
             heart.style.pointerEvents = 'none';
@@ -243,9 +336,10 @@
             const noBtn = document.getElementById('noBtn');
             const container = document.getElementById('container');
             
-            // Get viewport dimensions
-            const maxX = window.innerWidth - 120; // button width
-            const maxY = window.innerHeight - 60; // button height
+            // Get viewport dimensions with safe margins for mobile
+            const margin = window.innerWidth < 480 ? 60 : 120;
+            const maxX = Math.max(0, window.innerWidth - margin);
+            const maxY = Math.max(0, window.innerHeight - 100);
             
             // Generate random position
             const newX = Math.random() * maxX;
@@ -274,10 +368,35 @@
             }, 2000);
         }
 
+        // Handle orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(() => {
+                // Reset any moved "No" button on orientation change
+                const noBtn = document.getElementById('noBtn');
+                if (noBtn.style.position === 'fixed') {
+                    noBtn.style.position = 'relative';
+                    noBtn.style.left = 'auto';
+                    noBtn.style.top = 'auto';
+                    noBtn.style.zIndex = 'auto';
+                    noBtn.innerHTML = 'No 😤';
+                }
+            }, 100);
+        });
+
         // Initial floating hearts
         for (let i = 0; i < 5; i++) {
             setTimeout(createFloatingHeart, i * 1000);
         }
+
+        // Prevent zoom on double tap for iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
